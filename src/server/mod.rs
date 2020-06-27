@@ -1,2 +1,2 @@
-pub mod loadBalancer;
+pub mod load_balancer;
 pub mod worker;

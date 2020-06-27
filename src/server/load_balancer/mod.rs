@@ -13,4 +13,11 @@ impl LoadBalancer {
         }
         return Err("not implemented");
     }
+
+    pub fn assign_task(&mut self) {
+        let mut worker = self.pool.pop().unwrap();
+        worker.increase_workload();
+        //  call method
+        self.pool.push(worker);
+    }
 }
