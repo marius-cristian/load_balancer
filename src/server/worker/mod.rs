@@ -1,9 +1,12 @@
 use std::cmp::Ordering;
+use std::thread;
+use std::time::Duration;
+use tokio::sync::oneshot::Sender;
 
 pub struct Worker {
     pub workload: u32,
     pub name: String,
-    // the actual tokio worker
+    // the actual tokio thread
 }
 
 impl PartialEq for Worker {
@@ -47,7 +50,12 @@ impl Worker {
         }
     }
 
-    pub fn do_work() {}
+    pub fn do_work(&self, res: Sender<String>) {
+        println!("Task received! name: {:?}", self.name);
+        thread::sleep(Duration::from_millis(2000));
+        println!("Task done! {:?}", self.name);
+        res.send(format!("Worker {} finished.", self.name)).unwrap();
+    }
 
     pub fn get_workload(&self) -> u32 {
         self.workload

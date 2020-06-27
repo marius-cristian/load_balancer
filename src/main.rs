@@ -1,9 +1,15 @@
-#[macro_use]
-pub mod server;
-pub mod client;
+use std::sync::{Arc, Mutex};
+use std::thread;
 
+pub mod client;
+pub mod server;
+
+use crate::client::send_work;
 use crate::server::load_balancer;
 
 fn main() {
-    println!("Hello, world!");
+    let lb = load_balancer::LoadBalancer::new(5).unwrap();
+
+    send_work(lb);
+    send_work(lb);
 }
