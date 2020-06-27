@@ -2,6 +2,7 @@ use std::cmp::Ordering;
 
 pub struct Worker {
     pub workload: u32,
+    pub name: String,
     // the actual tokio worker
 }
 
@@ -39,8 +40,11 @@ impl PartialOrd for Worker {
 }
 
 impl Worker {
-    pub fn new() -> Worker {
-        Worker { workload: 0 }
+    pub fn new(name: u32) -> Worker {
+        Worker {
+            workload: 0,
+            name: format!("My name is: {}", name),
+        }
     }
 
     pub fn do_work() {}
@@ -48,14 +52,13 @@ impl Worker {
     pub fn get_workload(&self) -> u32 {
         self.workload
     }
-
-    pub fn increase_workload(&self) -> u32 {
+    pub fn increase_workload<'a>(&'a mut self) -> &'a u32 {
         self.workload += 1;
-        self.workload
+        &self.workload
     }
 
-    pub fn decrease_workload(&self) -> u32 {
+    pub fn decrease_workload<'a>(&'a mut self) -> &'a u32 {
         self.workload -= 1;
-        self.workload
+        &self.workload
     }
 }

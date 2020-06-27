@@ -1,8 +1,8 @@
 #[macro_use]
-pub mod Server;
-pub mod Clients;
+pub mod server;
+pub mod client;
 
-use crate::Server::LoadBalancer;
+use crate::server::loadBalancer;
 
 fn main() {
     println!("Hello, world!");
