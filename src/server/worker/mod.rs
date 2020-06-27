@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 use std::thread;
 use std::time::Duration;
-use tokio::sync::oneshot::{Sender, Receiver};
+use tokio::sync::oneshot::{Sender};
 use tokio::sync::oneshot;
 use tokio::task::JoinHandle;
 
@@ -70,12 +70,8 @@ impl Worker {
     }
 
     pub fn do_work(&self, res: Sender<String>) {
-        
+
         self.snd.send(res).unwrap();
-        // println!("Task received! name: {:?}", self.name);
-        // thread::sleep(Duration::from_millis(2000));
-        // println!("Task done! {:?}", self.name);
-        // res.send(format!("Worker {} finished.", self.name)).unwrap();
     }
 
     pub fn get_workload(&self) -> u32 {
