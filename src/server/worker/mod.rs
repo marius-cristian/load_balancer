@@ -65,7 +65,7 @@ impl Worker {
                                   .await
                                   .unwrap();
                            },
-                            _ => { },
+                            _ => { println!("NOTHING RECEIVED");},
                         }
                     }
                 }),
