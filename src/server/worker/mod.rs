@@ -48,7 +48,7 @@ impl PartialOrd for Worker {
 
 impl Worker {
     pub fn new(name: u32) -> Worker {
-        let (tx,mut rx) = mpsc::channel(400);
+        let (tx,mut rx) = mpsc::channel(100);
         Worker {
             workload: 0,
             name: format!("My name is: {}", name),
@@ -65,7 +65,7 @@ impl Worker {
                                   .await
                                   .unwrap();
                            },
-                            _ => { println!("NOTHING RECEIVED");},
+                            _ => { },
                         }
                     }
                 }),
@@ -73,6 +73,7 @@ impl Worker {
     }
 
     pub fn do_work(&self, res: Sender<String>) {
+        // there might be a problem here, the message doesnt seem to get sent further
         self.snd.clone().send(res);
     }
 
