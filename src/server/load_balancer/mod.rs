@@ -16,10 +16,10 @@ impl LoadBalancer {
         return Ok(LoadBalancer { pool: pool });
     }
 
-    pub fn assign_task(&mut self, res: Sender<String>) {
+    pub async fn assign_task(&mut self, res: Sender<String>) {
         let mut worker = self.pool.pop().unwrap();
         worker.increase_workload();
-        worker.do_work(res);
+        worker.do_work(res).await;
         self.pool.push(worker);
     }
 }

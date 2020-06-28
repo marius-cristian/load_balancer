@@ -55,26 +55,29 @@ impl Worker {
             snd: tx,
             server: tokio::spawn(async move{
                     loop {
-                        match rx.try_recv(){
-                            Ok(res) => {
+                        match rx.recv().await{
+                            Some(res) => {
                                println!("Task received! name: {:?}", name);
                                thread::sleep(Duration::from_millis(2000));
                                println!("Task done! {:?}", name);
                                res.clone()
                                   .send(format!("Worker {} finished.", name))
-                                  .await
-                                  .unwrap();
+                                  .await;
                            },
                             _ => { },
                         }
+                    // let res = rx.recv().await.unwrap();
+                    // res.clone().send(format!("Worker {} finished.", name)).await.unwrap();
+                    // return 1;
                     }
                 }),
         }
     }
 
-    pub fn do_work(&self, res: Sender<String>) {
+    pub async fn do_work(&self, res: Sender<String>) {
         // there might be a problem here, the message doesnt seem to get sent further
-        self.snd.clone().send(res);
+        self.snd.clone().send(res).await;
+
     }
 
     pub fn get_workload(&self) -> u32 {
