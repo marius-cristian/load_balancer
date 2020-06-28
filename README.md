@@ -1,8 +1,8 @@
 ## Layout
 
-the `server` folder contains the modules for the load_balancer and the worker.
+the `src/server` folder contains the modules for the load_balancer and the worker.
 
-the `client` folder contains the module for the client code.
+the `src/client` folder contains the module for the client code.
 
 
 ## The client
@@ -22,7 +22,7 @@ The loadbalancer is a structure that contains a binary heap of workers; and expo
 
 
 Limitations of the loadbalancer:
-- the load balancer never decreases the workload of the workers, thus at some point it will overflow and the same worker will perform the same task
+- the load balancer never decreases the workload of the workers, thus at some point it will overflow and the same worker will perform the incoming tasks form that point in time
 - the load balancer does not implement the copy nor clone trait, thus I could not make it work with multiple client calls; for example in the main method when I try to call the client method the second time on the loadbalancer object, I cannot, as the value has already moved.
 
 ## The worker
