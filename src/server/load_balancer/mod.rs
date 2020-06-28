@@ -1,7 +1,7 @@
 use super::worker::Worker;
 use std::collections::BinaryHeap;
-use tokio::sync::oneshot;
-use tokio::sync::oneshot::Sender;
+use tokio::sync::mpsc;
+use tokio::sync::mpsc::Sender;
 
 pub struct LoadBalancer {
     pub pool: BinaryHeap<Worker>, // resource pool binaryheap of workers

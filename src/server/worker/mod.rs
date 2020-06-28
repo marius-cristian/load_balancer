@@ -1,8 +1,8 @@
 use std::cmp::Ordering;
 use std::thread;
 use std::time::Duration;
-use tokio::sync::oneshot::{Sender};
-use tokio::sync::oneshot;
+use tokio::sync::mpsc::{Sender};
+use tokio::sync::mpsc;
 use tokio::task::JoinHandle;
 
 pub struct Worker {
@@ -48,7 +48,7 @@ impl PartialOrd for Worker {
 
 impl Worker {
     pub fn new(name: u32) -> Worker {
-        let (tx,mut rx) = oneshot::channel();
+        let (tx,mut rx) = mpsc::channel(400);
         Worker {
             workload: 0,
             name: format!("My name is: {}", name),
@@ -60,7 +60,10 @@ impl Worker {
                                println!("Task received! name: {:?}", name);
                                thread::sleep(Duration::from_millis(2000));
                                println!("Task done! {:?}", name);
-                               res.send(format!("Worker {} finished.", name)).unwrap();
+                               res.clone()
+                                  .send(format!("Worker {} finished.", name))
+                                  .await
+                                  .unwrap();
                            },
                             _ => { },
                         }
@@ -70,8 +73,7 @@ impl Worker {
     }
 
     pub fn do_work(&self, res: Sender<String>) {
-
-        self.snd.send(res).unwrap();
+        self.snd.clone().send(res);
     }
 
     pub fn get_workload(&self) -> u32 {
