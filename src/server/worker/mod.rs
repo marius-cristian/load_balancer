@@ -66,16 +66,12 @@ impl Worker {
                            },
                             _ => { },
                         }
-                    // let res = rx.recv().await.unwrap();
-                    // res.clone().send(format!("Worker {} finished.", name)).await.unwrap();
-                    // return 1;
                     }
                 }),
         }
     }
 
     pub async fn do_work(&self, res: Sender<String>) {
-        // there might be a problem here, the message doesnt seem to get sent further
         self.snd.clone().send(res).await;
 
     }
